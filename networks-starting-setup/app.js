@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios').default;
@@ -69,8 +70,11 @@ app.get('/people', async (req, res) => {
 });
 
 mongoose.connect(
-  // host.docker.internal: My local computer
-  'mongodb://host.docker.internal:27017/swfavorites',
+  // 1) host.docker.internal: My local computer
+  // 2) MONGODB_CONTAINER_ADDRESS: Mongo Container Addresss
+  // `mongodb://${process.env.MONGODB_CONTAINER_ADDRESS}:27017/swfavorites`,
+  // 3) If same network, use other container's name
+  `mongodb://mongodb:27017/swfavorites`,
   { useNewUrlParser: true },
   (err) => {
     if (err) {
