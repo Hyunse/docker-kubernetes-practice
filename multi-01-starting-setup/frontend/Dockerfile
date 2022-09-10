@@ -13,5 +13,10 @@ EXPOSE 3000
 CMD ["npm", "start"]
 
 # Frontend Container
+# Without Network
+# docker build -t goals-react .
+# docker run --name goals-frontend --rm -p 3000:3000 -it goals-react
+
+# With Network
 # docker build -t goals-react .
 # docker run --name goals-frontend --rm -p 3000:3000 -it goals-react
