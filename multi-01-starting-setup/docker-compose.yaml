@@ -1,0 +1,65 @@
+# version of docker-compose
+version: "3.8"
+
+# List of Services
+# ----------------
+services:
+  # service name
+  # 1) MongoDB
+  # docker run --name mongodb -v data:/data/db --rm -d --network goals-net -e MONGO_INITDB_ROOT_USERNAME=arthur -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+  # we don't need to specify -d --rm
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+    # enviroment:
+    #   MONGO_INITDB_ROOT_USERNAME: arthur
+    #   MONGO_INITDB_ROOT_PASSWORD: secret
+    env_file:
+      - ./env/mongo.env
+    # We don't need to specify the network because docker-compose makes the default network
+    # networks:
+    #   - goals-net
+  
+  # 2) Backend container
+  # docker run --name goals-backend -v /Users/arthur/Dev/docker-kubernetes-practice/multi-01-starting-setup/backend:/app -v logs:/app/logs -v /app/node_modules --rm -d -p 80:80 --network goals-net goals-NODE
+  backend:
+    build: ./backend
+    # build:
+    #   context: ./backend
+    #   dockerfile: Dockerfile
+    #   args:
+    #     some-arg: 1
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend:/app
+      - logs:/app/logs
+      - /app/node_modules
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+  # 3) Frontend container
+  # docker run -v /Users/arthur/Dev/docker-kubernetes-practice/multi-01-starting-setup/frontend/src:/app/src --name goals-frontend --rm -p 3000:3000 -it goals-react
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/src:/app/src
+    # frontend use interactive mode
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+# List of Volumes
+# ---------------
+volumes:
+  data:
+  logs:
+
+
+  # docker-compose up
+  # docker-compose down
+  # docker-compose down -v : remove all with volume
