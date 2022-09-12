@@ -10,7 +10,11 @@ COPY . .
 
 EXPOSE 80
 
-CMD ["node", "app.js"]
+# Default ENV
+# ENV MONGODB_USERNAME=root
+# ENV MONGODB_PASSWORD=secret
+
+CMD ["npm", "start"]
 
 # 1. Without Network
 
@@ -33,3 +37,13 @@ CMD ["node", "app.js"]
 # 3) Backend Container ( Node )
 # docker build -t goals-node .
 # docker run --name goals-backend --rm -d -p 80:80 --network goals-net goals-node
+
+# 3. With Volume
+# MongoDB With Volume
+# docker run --name mongodb -v data:/data/db --rm -d --network goals-net mongo
+
+# MongoDB authentication with -e
+# docker run --name mongodb -v data:/data/db --rm -d --network goals-net -e MONGO_INITDB_ROOT_USERNAME=arthur -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+
+# Volume for log files & Bind mount
+# docker run --name goals-backend -v /Users/arthur/Dev/docker-kubernetes-practice/multi-01-starting-setup/backend:/app -v logs:/app/logs -v /app/node_modules --rm -d -p 80:80 --network goals-net goals-node

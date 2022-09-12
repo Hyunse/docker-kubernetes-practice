@@ -20,3 +20,6 @@ CMD ["npm", "start"]
 # With Network
 # docker build -t goals-react .
 # docker run --name goals-frontend --rm -p 3000:3000 -it goals-react
+
+# Live Source Code Update ( Bind mount )
+# docker run -v /Users/arthur/Dev/docker-kubernetes-practice/multi-01-starting-setup/frontend/src:/app/src --name goals-frontend --rm -p 3000:3000 -it goals-react
