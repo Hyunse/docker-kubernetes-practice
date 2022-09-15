@@ -30,3 +30,5 @@ CMD ["node", "app.js"]
 
 # Docker Engine Install
 # https://docs.docker.com/engine/install/
+
+# docker push kimhyunse/node-example-1:tagname
