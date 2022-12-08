@@ -11,7 +11,7 @@ COPY . .
 EXPOSE 80
 
 # Default ENV
-ENV MONGODB_USERNAME=arthur
+ENV MONGODB_USERNAME=root
 ENV MONGODB_PASSWORD=secret
 ENV MONGODB_URL=mongodb
 
@@ -24,6 +24,8 @@ CMD ["npm", "start"]
 
 # 2) Backend Container ( Node )
 # docker build -t goals-node .
+# docker buildx build --platform=linux/amd64 -t goals-node .
+
 # docker run --name goals-backend --rm -d -p 80:80 goals-node
 
 
